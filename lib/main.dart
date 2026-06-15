@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:live_driving_tracking_app/presentation/pages/tracking_map_page.dart';
 
+import 'core/theme/app_theme.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,10 +16,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Live Driver Tracking App",
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
-        useMaterial3: true,
-      ),
+      // themeMode: ThemeMode.light,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       home: const TrackingMapPage(),
     );
   }

@@ -19,7 +19,7 @@ android {
         applicationId = "com.example.live_driving_tracking_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = flutter.minSdkVersion // Updated from flutter.minSdkVersion (Google Maps requires at least 20)
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
