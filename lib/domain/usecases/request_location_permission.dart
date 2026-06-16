@@ -6,6 +6,5 @@ class RequestLocationPermission {
   final LocationRepository repository;
   const RequestLocationPermission(this.repository);
 
-  @override
   Future<Either<Failure,bool>> call() => repository.requestLocationPermission();
 }
