@@ -3,11 +3,12 @@ import 'package:live_driving_tracking_app/data/models/locations_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../core/constants/app_constants.dart';
+import '../../core/errors/failures.dart';
 
 abstract class LocationDatasource {
   Future<bool> requestPermission();
   Future<LocationModel> getCurrentLocation();
-  Future<LocationModel> getLocationStream();
+  Stream<LocationModel> getLocationStream();
 }
 
 class LocationDataSourceImpl implements LocationDatasource{
@@ -33,7 +34,36 @@ class LocationDataSourceImpl implements LocationDatasource{
     if(status.isPermanentlyDenied){
       throw const PermissionPermanentlyDeniedFailure();
     }
+    /// actually request permission
+    final result = await Permission.locationWhenInUse.request();
+    if(result.isGranted) return true;
+    if(result.isPermanentlyDenied){
+      throw const PermissionPermanentlyDeniedFailure();
+    }
+    throw const PermissionDeniedFailure();
+  }
 
+  @override
+  Future<LocationModel> getCurrentLocation() async{
+    try{
+      final position = await Geolocator.getCurrentPosition(
+          locationSettings: _locationSettings
+      );
+      return LocationModel.fromPosition(position);
+    }on LocationServiceDisabledException{
+      throw const LocationServiceDisabledFailure();
+    }on PermissionDeniedException{
+      throw const PermissionDeniedFailure();
+    }catch(e){
+      throw  LocationFailure(e.toString());
+    }
+  }
+
+  @override
+  Stream<LocationModel> getLocationStream(){
+    return Geolocator.getPositionStream(
+      locationSettings: _locationSettings,
+    ).map((position)=> LocationModel.fromPosition(position));
   }
 
 }
