@@ -22,16 +22,16 @@ class TrackingOpenSettingsRequested extends TrackingEvent{
 }
 
 /// Internal event emitted each time geolocator updates the location
-class _TrackLocationUpdated extends TrackingEvent{
+class TrackLocationUpdated extends TrackingEvent{
   final DriverLocationEntity location;
-  const _TrackLocationUpdated(this.location);
+  const TrackLocationUpdated(this.location);
   @override
   List<Object?> get props => [location];
 }
 
-class _TrackingLocationError extends TrackingEvent{
+class TrackingLocationError extends TrackingEvent{
   final Failure failure;
-  const _TrackingLocationError(this.failure);
+  const TrackingLocationError(this.failure);
   @override
   List<Object?> get props => [failure];
 
